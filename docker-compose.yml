@@ -25,6 +25,23 @@ services:
     volumes:
       - ./data/db:/data
       - ./config/virtuoso/virtuoso.ini:/data/virtuoso.ini
+  login:
+    image: semtech/mu-login-service:2.9.1
+    links:
+      - database:database
+  
+  registration:
+    image: semtech/mu-registration-service:2.6.0
+    links:
+      - database:database
+  
+  yasgui:
+    image: erikap/yasgui
+    ports:
+      - 3000:80
+    environment:
+      DEFAULT_SPARQL_ENDPOINT: "http://localhost:8890/sparql"
+      ENABLE_ENDPOINT_SELECTOR: true
   resource:
     image: semtech/mu-cl-resources:1.20.0
     links:

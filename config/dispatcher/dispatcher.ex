@@ -12,12 +12,33 @@ defmodule Dispatcher do
   # In order to forward the 'themes' resource to the
   # resource service, use the following forward rule:
   #
-  # match "/themes/*path", @json do
-  #   Proxy.forward conn, path, "http://resource/themes/"
-  # end
+  match "/people/*path", @json do
+    Proxy.forward conn, path, "http://resource/people/"
+  end
+
+  match "/posts/*path", @json do
+    Proxy.forward conn, path, "http://resource/posts/"
+  end
+
+
+  match "/sessions/*path", @any do
+    Proxy.forward conn, path, "http://login/sessions/"
+  end
+
+  match "/accounts/*path" do
+    Proxy.forward conn, path, "http://registration/accounts/"
+  end
   #
   # Run `docker-compose restart dispatcher` after updating
   # this file.
+
+  # match "/library/*path", @any do
+  #   Proxy.forward conn, path, "http://booksservice/"
+  # end
+
+  # match "/library/query/*path", @any do
+  #   Proxy.forward conn, path, "http://booksservice/query/"
+  # end
 
   match "/*_", %{ last_call: true } do
     send_resp( conn, 404, "Route not found.  See config/dispatcher.ex" )

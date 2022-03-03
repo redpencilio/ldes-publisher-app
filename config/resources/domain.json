@@ -1,7 +1,47 @@
 {
   "version": "0.1",
   "prefixes": {
+    "foaf": "http://xmlns.com/foaf/0.1/",
+    "schema": "https://schema.org/"
   },
   "resources": {
+    "people": {
+      "name": "person",
+      "class": "foaf:Person",
+      "attributes": {
+        "name": {
+          "type": "string",
+          "predicate": "foaf:name"
+        },
+        "age": {
+          "type": "number",
+          "predicate": "foaf:age"
+        },
+        "lastname": {
+          "type": "string",
+          "predicate": "foaf:lastname"
+        }
+      },
+      "new-resource-base": "https://my-application.com/people/"
+    },
+    "posts": {
+      "name": "post",
+      "class": "schema:SocialMediaPosting",
+      "attributes": {
+        "headline": {
+          "type": "string",
+          "predicate": "schema:headline"
+        },
+        "articleBody": {
+          "type": "string",
+          "predicate": "schema:articleBody"
+        },
+        "thumbnailUrl": {
+          "type": "string",
+          "predicate": "schema:thumbnailUrl"
+        }
+      },
+      "new-resource-base": "https://my-application.com/posts/"
+    }
   }
 }
