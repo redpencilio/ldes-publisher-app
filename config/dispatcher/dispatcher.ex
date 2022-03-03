@@ -16,8 +16,16 @@ defmodule Dispatcher do
     Proxy.forward conn, path, "http://resource/people/"
   end
 
+  match "/accounts/*path", @json do
+    Proxy.forward conn, path, "http://resource/accounts/"
+  end
+
   match "/posts/*path", @json do
     Proxy.forward conn, path, "http://resource/posts/"
+  end
+
+  match "/files/*path", @any do
+    forward conn, path, "http://file/files/"
   end
 
 

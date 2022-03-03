@@ -12,17 +12,35 @@
         "name": {
           "type": "string",
           "predicate": "foaf:name"
-        },
-        "age": {
-          "type": "number",
-          "predicate": "foaf:age"
-        },
-        "lastname": {
-          "type": "string",
-          "predicate": "foaf:lastname"
         }
       },
-      "new-resource-base": "https://my-application.com/people/"
+      "relationships": {
+        "account": {
+          "predicate": "foaf:account",
+          "target": "account",
+          "cardinality": "one"
+        }
+      },
+      "new-resource-base": "http://mu.semte.ch/application"
+    },
+    "accounts": {
+      "name": "account",
+      "class": "foaf:OnlineAccount",
+      "attributes": {
+        "nickname": {
+          "type": "string",
+          "predicate": "foaf:accountName"
+        }
+      },
+      "relationships": {
+        "owner": {
+          "predicate": "foaf:account",
+          "target": "person",
+          "cardinality": "one",
+          "inverse": true
+        }
+      },
+      "new-resource-base": "http://mu.semte.ch/application"
     },
     "posts": {
       "name": "post",
