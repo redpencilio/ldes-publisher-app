@@ -16,9 +16,7 @@ defmodule Dispatcher do
     Proxy.forward conn, path, "http://resource/people/"
   end
 
-  match "/accounts/*path", @json do
-    Proxy.forward conn, path, "http://resource/accounts/"
-  end
+
 
   match "/posts/*path", @json do
     Proxy.forward conn, path, "http://resource/posts/"
@@ -33,7 +31,19 @@ defmodule Dispatcher do
     Proxy.forward conn, path, "http://login/sessions/"
   end
 
-  match "/accounts/*path" do
+  get "/accounts/*path", @json do
+    Proxy.forward conn, path, "http://resource/accounts/"
+  end
+
+  post "/accounts/*path" do
+    Proxy.forward conn, path, "http://registration/accounts/"
+  end
+
+  patch "/accounts/*path" do
+    Proxy.forward conn, path, "http://registration/accounts/"
+  end
+
+  delete "/accounts/*path" do
     Proxy.forward conn, path, "http://registration/accounts/"
   end
   #

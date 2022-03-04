@@ -42,6 +42,12 @@
           "target": "person",
           "cardinality": "one",
           "inverse": true
+        },
+        "posts": {
+          "predicate": "schema:author",
+          "target": "post",
+          "cardinality": "many",
+          "inverse": true
         }
       },
       "new-resource-base": "http://mu.semte.ch/application"
@@ -65,6 +71,13 @@
         "dateCreated": {
           "type": "datetime",
           "predicate": "schema:dateCreated"
+        }
+      },
+      "relationships": {
+        "author": {
+          "predicate": "schema:author",
+          "target": "account",
+          "cardinality": "one"
         }
       },
       "new-resource-base": "https://my-application.com/posts/"
