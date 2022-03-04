@@ -35,6 +35,13 @@ services:
     links:
       - database:database
   
+  file:
+    image: semtech/mu-file-service:3.2.0
+    links:
+      - database:database
+    volumes:
+      - ./data/files:/share
+  
   yasgui:
     image: erikap/yasgui
     ports:
