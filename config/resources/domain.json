@@ -25,7 +25,7 @@
           "cardinality": "one"
         }
       },
-      "new-resource-base": "http://mu.semte.ch/application"
+      "new-resource-base": "https://my-application.com/people/"
     },
     "accounts": {
       "name": "account",
@@ -50,7 +50,7 @@
           "inverse": true
         }
       },
-      "new-resource-base": "http://mu.semte.ch/application"
+      "new-resource-base": "https://my-application.com/accounts/"
     },
     "posts": {
       "name": "post",

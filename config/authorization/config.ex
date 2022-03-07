@@ -1,8 +1,12 @@
 alias Acl.Accessibility.Always, as: AlwaysAccessible
+alias Acl.Accessibility.ByQuery, as: AccessByQuery
+alias Acl.GraphSpec.Constraint.ResourceFormat, as: ResourceFormatConstraint
 alias Acl.GraphSpec.Constraint.Resource, as: ResourceConstraint
 alias Acl.GraphSpec, as: GraphSpec
 alias Acl.GroupSpec, as: GroupSpec
 alias Acl.GroupSpec.GraphCleanup, as: GraphCleanup
+alias Acl.GraphSpec.Constraint.Resource.NoPredicates, as: NoPredicates
+alias Acl.GraphSpec.Constraint.Resource.AllPredicates, as: AllPredicates
 
 defmodule Acl.UserGroups.Config do
   def user_groups do
@@ -16,14 +20,54 @@ defmodule Acl.UserGroups.Config do
       # // PUBLIC
       %GroupSpec{
         name: "public",
-        useage: [:read],
+        useage: [:read,:read_for_write],
         access: %AlwaysAccessible{},
         graphs: [ %GraphSpec{
                     graph: "http://mu.semte.ch/graphs/public",
                     constraint: %ResourceConstraint{
                       resource_types: [
+                        "http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#FileDataObject",
+                        "https://schema.org/SocialMediaPosting"
                       ]
-                    } } ] },
+                    } },
+                  %GraphSpec{
+                    graph: "http://mu.semte.ch/graphs/sessions",
+                    constraint: %ResourceFormatConstraint{
+                      resource_prefix: "http://mu.semte.ch/vocabularies/session/"
+                    }
+                  },
+                  %GraphSpec{
+                    graph: "http://mu.semte.ch/graphs/users",
+                    constraint: %ResourceConstraint{
+                      resource_types: [
+                        "http://xmlns.com/foaf/0.1/OnlineAccount",
+                        "http://xmlns.com/foaf/0.1/Person",
+                      ]
+                    }
+                  }
+                     ] },
+      # Only logged in users can write a post
+      %GroupSpec{
+        name: "writers",
+        useage: [:read, :write, :read_for_write],
+        access: %AccessByQuery{
+          vars: ["session_group"],
+          query: "PREFIX ext: <http://mu.semte.ch/vocabularies/ext/>
+                  PREFIX mu: <http://mu.semte.ch/vocabularies/core/>
+                  SELECT DISTINCT ?session_group WHERE {
+                    <SESSION_ID> mu:uuid ?session_group.
+                    }" },
+          graphs: [
+            %GraphSpec{
+              graph: "http://mu.semte.ch/graphs/users/",
+              constraint: %ResourceConstraint{
+                resource_types: [
+                  "http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#FileDataObject",
+                  "https://schema.org/SocialMediaPosting"
+                ]
+              } }
+          ]
+      },
 
       # // CLEANUP
       #

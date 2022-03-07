@@ -5,6 +5,8 @@ services:
     image: semtech/mu-identifier:1.9.1
     environment:
       SESSION_COOKIE_SECURE: "on"
+      environment:
+      DEFAULT_MU_AUTH_ALLOWED_GROUPS_HEADER: "[{\"variables\":[],\"name\":\"public\"}]"
     links:
       - dispatcher:dispatcher
     ports:
@@ -16,9 +18,10 @@ services:
     volumes:
       - ./config/dispatcher:/config
   database:
-    image: semtech/mu-authorization:0.6.0-beta.5
+    image: semtech/mu-authorization:0.6.0-beta.7
     environment:
       MU_SPARQL_ENDPOINT: "http://triplestore:8890/sparql"
+      ERROR_ON_UNWRITTEN_DATA: true
     volumes:
       - ./config/authorization:/config
   triplestore:
@@ -33,11 +36,16 @@ services:
       - ./config/virtuoso/virtuoso.ini:/data/virtuoso.ini
   login:
     image: semtech/mu-login-service:2.9.1
+    environment:
+      USERS_GRAPH: "http://mu.semte.ch/graphs/users"
+      SESSIONS_GRAPH: "http://mu.semte.ch/graphs/sessions"
     links:
       - database:database
   
   registration:
     image: semtech/mu-registration-service:2.6.0
+    environment:
+      MU_APPLICATION_GRAPH: "http://mu.semte.ch/graphs/users"
     links:
       - database:database
   
