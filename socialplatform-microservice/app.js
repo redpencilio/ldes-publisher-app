@@ -66,6 +66,7 @@ app.post('/posts', function(req, res) {
             deletes.push(deleteOp);
         })
     });
+    console.log(inserts)
     query(generateQuery(inserts, deletes)).then( function(response) {
         console.log("done");
         console.log(response);

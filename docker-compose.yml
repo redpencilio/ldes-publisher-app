@@ -77,8 +77,6 @@ services:
 
   socialplatformmicroservice:
       image: semtech/mu-javascript-template
-      ports:
-        - 8888:80
       environment:
         NODE_ENV: "development"
       links:

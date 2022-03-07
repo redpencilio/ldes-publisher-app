@@ -18,5 +18,21 @@ export default [
             gracePeriod: 1000,
             ignoreFromSelf: true
         }
+    },
+    {
+        match: {
+            predicate: {
+                type: "uri",
+                value: "https://schema.org/author",
+            },
+        },
+        callback: {
+            url: "http://socialplatformmicroservice/posts/", method: "POST"
+        },
+        options: {
+            resourceFormat: "v0.0.1",
+            gracePeriod: 1000,
+            ignoreFromSelf: true
+        }
     }
 ]
