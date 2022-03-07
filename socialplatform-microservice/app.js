@@ -54,7 +54,6 @@ function generateQuery(inserts, deletes){
 }
 
 app.post('/posts', function(req, res) {
-    console.log("test");
     let inserts = [];
     let deletes = [];
     req.body.forEach(operation => {
@@ -66,14 +65,11 @@ app.post('/posts', function(req, res) {
             deletes.push(deleteOp);
         })
     });
-    console.log(inserts)
+
     query(generateQuery(inserts, deletes)).then( function(response) {
-        console.log("done");
-        console.log(response);
         res.send( JSON.stringify( response ) );
       })
       .catch( function(err) {
-          console.log(err);
         res.send( "Oops something went wrong: " + JSON.stringify( err ) );
       });
 })
