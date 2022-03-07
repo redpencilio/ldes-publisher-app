@@ -69,3 +69,19 @@ services:
       - database:database
     volumes:
       - ./config/resources:/config
+
+  deltanotifier:
+    image: semtech/mu-delta-notifier
+    volumes:
+      - ./config/delta:/config
+
+  socialplatformmicroservice:
+      image: semtech/mu-javascript-template
+      ports:
+        - 8888:80
+      environment:
+        NODE_ENV: "development"
+      links:
+        - triplestore:database
+      volumes:
+        - ./socialplatform-microservice/:/app/
