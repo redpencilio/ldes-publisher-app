@@ -43,7 +43,7 @@ services:
       - database:database
   
   registration:
-    image: semtech/mu-registration-service:2.6.0
+    image: registrationservice:local
     environment:
       MU_APPLICATION_GRAPH: "http://mu.semte.ch/graphs/users"
     links:

@@ -1,5 +1,7 @@
 import { app, query, update, sparql, errorHandler } from 'mu';
 import bodyParser from 'body-parser';
+
+const APPLICATION_GRAPH = 'http://mu.semte.ch/graphs/public';
 app.use(bodyParser.json({
     limit: '500mb',
     type: function(req) {
@@ -32,7 +34,7 @@ function generateQuery(inserts, deletes){
 
     if(insertString){
         insertString = `INSERT {
-            GRAPH <http://mu.semte.ch/graphs/public> {
+            GRAPH <${APPLICATION_GRAPH}> {
                 ${insertString}
             }
         }`;
@@ -40,7 +42,7 @@ function generateQuery(inserts, deletes){
     if(deleteString){
         deleteString = `
         DELETE {
-            GRAPH <http://mu.semte.ch/graphs/public> {
+            GRAPH <${APPLICATION_GRAPH}> {
                 ${deleteString}
             }
         }`

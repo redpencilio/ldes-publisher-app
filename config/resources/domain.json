@@ -50,6 +50,7 @@
           "inverse": true
         }
       },
+      
       "new-resource-base": "https://my-application.com/accounts/"
     },
     "posts": {
