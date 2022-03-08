@@ -83,3 +83,10 @@ services:
         - triplestore:database
       volumes:
         - ./socialplatform-microservice/:/app/
+  
+  imageservice:
+    image: madnificent/mu-image-service:0.0.1
+    links:
+      - database:database
+    volumes:
+      - ./data/files:/share

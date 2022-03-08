@@ -26,6 +26,9 @@ defmodule Dispatcher do
     forward conn, path, "http://file/files/"
   end
 
+  match "/images/*path" do
+    Proxy.forward conn, path, "http://imageservice/image/"
+  end
 
   match "/sessions/*path", @any do
     Proxy.forward conn, path, "http://login/sessions/"
