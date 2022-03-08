@@ -48,7 +48,7 @@ defmodule Acl.UserGroups.Config do
                      ] },
       # Only logged in users can write a post
       %GroupSpec{
-        name: "writers",
+        name: "users",
         useage: [:read, :write, :read_for_write],
         access: %AccessByQuery{
           vars: ["session_group"],
@@ -63,7 +63,9 @@ defmodule Acl.UserGroups.Config do
               constraint: %ResourceConstraint{
                 resource_types: [
                   "http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#FileDataObject",
-                  "https://schema.org/SocialMediaPosting"
+                  "https://schema.org/SocialMediaPosting",
+                  "http://xmlns.com/foaf/0.1/OnlineAccount",
+                  "http://xmlns.com/foaf/0.1/Person",
                 ]
               } }
           ]

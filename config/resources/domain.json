@@ -23,6 +23,11 @@
           "predicate": "foaf:account",
           "target": "account",
           "cardinality": "one"
+        },
+        "follows": {
+          "predicate": "foaf:knows",
+          "target": "person",
+          "cardinality": "many"
         }
       },
       "new-resource-base": "https://my-application.com/people/"
