@@ -94,7 +94,14 @@ services:
         - 3002:3000
       volumes:
         - ./socialplatform-ws-microservice/:/app/
-  
+
+  frontend:
+    image: danlynn/ember-cli:4.2.0
+    # ports:
+    #   - "4200:4200"
+    volumes:
+      - ../ember-mu-socialplatform:/myapp
+
   imageservice:
     image: madnificent/mu-image-service:0.0.1
     links:
