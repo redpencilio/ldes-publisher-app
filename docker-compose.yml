@@ -83,6 +83,17 @@ services:
         - triplestore:database
       volumes:
         - ./socialplatform-microservice/:/app/
+
+  socialplatformwsmicroservice:
+      image: semtech/mu-javascript-template
+      environment:
+        NODE_ENV: "development"
+      links:
+        - triplestore:database
+      ports:
+        - 3002:3000
+      volumes:
+        - ./socialplatform-ws-microservice/:/app/
   
   imageservice:
     image: madnificent/mu-image-service:0.0.1
@@ -90,10 +101,3 @@ services:
       - database:database
     volumes:
       - ./data/files:/share
-  
-  # frontend:
-  #   image: danlynn/ember-cli:latest
-  #   volumes: 
-  #     - ../ember-mu-socialplatform:/myapp
-  #   ports:
-  #     - "4200:4200"
