@@ -15,7 +15,6 @@ services:
     image: semtech/mu-dispatcher:2.0.0
     links:
       - resource:resource
-      # - frontend:frontend
     volumes:
       - ./config/dispatcher:/config
   database:

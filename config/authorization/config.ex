@@ -55,7 +55,7 @@ defmodule Acl.UserGroups.Config do
           query: "PREFIX ext: <http://mu.semte.ch/vocabularies/ext/>
                   PREFIX mu: <http://mu.semte.ch/vocabularies/core/>
                   PREFIX session: <http://mu.semte.ch/vocabularies/session/>
-                  SELECT DISTINCT ?session_group WHERE {
+                  SELECT DISTINCT ?account_id WHERE {
                     <SESSION_ID> session:account ?account_id.
                     }" },
           graphs: [

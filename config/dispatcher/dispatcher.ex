@@ -51,9 +51,9 @@ defmodule Dispatcher do
   end
 
 
-  match "/frontend/*path", @html do
-    Proxy.forward conn, path, "http://frontend:4200/"
-  end
+  # match "/frontend/*path", @html do
+  #   Proxy.forward conn, path, "http://frontend:4200/"
+  # end
   #
   # Run `docker-compose restart dispatcher` after updating
   # this file.
