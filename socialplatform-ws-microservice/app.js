@@ -1,10 +1,11 @@
 import { app, query, update, sparql, errorHandler } from 'mu';
-
+import { WebSocketServer, WebSocket } from 'ws';
 import http from 'http';
 import bodyParser from 'body-parser';
 import { Server } from 'socket.io';
 const server = http.createServer(app);
-const io = new Server(server);
+//TODO: Disable origin: * once running on the same port!
+const wss = new WebSocketServer({ server });
 
 app.use(bodyParser.json({
     limit: '500mb',
@@ -34,19 +35,23 @@ app.get('/', (req, res) => {
 app.post('/posts', (req, res) => {
   req.body.forEach(operation => {
     let headlinetriple = extractHeadline(operation.inserts);
-    console.log(operation.insrts)
     let bodytriple = extractBody(operation.inserts);
     if(headlinetriple && bodytriple){
-      console.log(headlinetriple);
-      io.emit("new post", {
-        headline: headlinetriple.object.value,
-        body: bodytriple.object.value
+      console.log(wss.clients);
+      wss.clients.forEach((client) => {
+        if(client.readyState === WebSocket.OPEN){
+          console.log("yes");
+          client.send(JSON.stringify({
+              headline: headlinetriple.object.value,
+              body: bodytriple.object.value
+            }));
+        }
       })
     }
   })
 })
 
-io.on('connection', (socket) => {
+wss.on('connection', (socket) => {
   console.log('User connected')
 })
 

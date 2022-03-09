@@ -50,6 +50,13 @@ defmodule Dispatcher do
     Proxy.forward conn, path, "http://registration/accounts/"
   end
 
+  match "/websocket/*path" do
+    ws(conn, "ws://socialplatformwsmicroservice:3000/")
+  end
+
+
+
+
 
   # match "/frontend/*path", @html do
   #   Proxy.forward conn, path, "http://frontend:4200/"
