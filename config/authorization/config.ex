@@ -51,11 +51,12 @@ defmodule Acl.UserGroups.Config do
         name: "users",
         useage: [:read, :write, :read_for_write],
         access: %AccessByQuery{
-          vars: ["session_group"],
+          vars: ["account_id"],
           query: "PREFIX ext: <http://mu.semte.ch/vocabularies/ext/>
                   PREFIX mu: <http://mu.semte.ch/vocabularies/core/>
+                  PREFIX session: <http://mu.semte.ch/vocabularies/session/>
                   SELECT DISTINCT ?session_group WHERE {
-                    <SESSION_ID> mu:uuid ?session_group.
+                    <SESSION_ID> session:account ?account_id.
                     }" },
           graphs: [
             %GraphSpec{

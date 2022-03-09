@@ -15,7 +15,7 @@ services:
     image: semtech/mu-dispatcher:2.0.0
     links:
       - resource:resource
-      - frontend:frontend
+      # - frontend:frontend
     volumes:
       - ./config/dispatcher:/config
   database:
@@ -92,9 +92,9 @@ services:
     volumes:
       - ./data/files:/share
   
-  frontend:
-    image: danlynn/ember-cli:latest
-    volumes: 
-      - ../ember-mu-socialplatform:/myapp
-    ports:
-      - "4200:4200"
+  # frontend:
+  #   image: danlynn/ember-cli:latest
+  #   volumes: 
+  #     - ../ember-mu-socialplatform:/myapp
+  #   ports:
+  #     - "4200:4200"
