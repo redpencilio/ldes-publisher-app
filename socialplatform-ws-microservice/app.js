@@ -2,7 +2,6 @@ import { app, query, update, sparql, errorHandler } from 'mu';
 import { WebSocketServer, WebSocket } from 'ws';
 import http from 'http';
 import bodyParser from 'body-parser';
-import { Server } from 'socket.io';
 const server = http.createServer(app);
 //TODO: Disable origin: * once running on the same port!
 const wss = new WebSocketServer({ server });

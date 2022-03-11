@@ -56,16 +56,14 @@ defmodule Dispatcher do
 
 
 
-
-
-  match "/assets/*path", @any do
-    forward conn, path, "http://frontend:4200/assets/"
+  match "/frontend/assets/*path", @any do
+    forward conn, path, "http://frontend:4200/frontend/assets/"
   end
 
-  match "/*_path", @html do
+  match "/frontend/*_path", @html do
     # *_path allows a path to be supplied, but will not yield
     # an error that we don't use the path variable.
-    forward conn, [], "http://frontend:4200/index.html"
+    forward conn, [], "http://frontend:4200/frontend/index.html"
   end
 
 

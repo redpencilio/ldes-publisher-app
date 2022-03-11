@@ -1,0 +1,21 @@
+{
+    "types" : [
+        {
+            "type" : "document",
+            "on_path" : "documents",
+            "rdf_type" : "http://xmlns.com/foaf/0.1/Document",
+            "properties" : {
+                "title" : "http://purl.org/dc/elements/1.1/title",
+                "description" : "http://purl.org/dc/elements/1.1/description"
+            }
+        },
+        {
+            "type" : "user",
+            "on_path" : "users",
+            "rdf_type" : "http://xmlns.com/foaf/0.1/Person",
+            "properties" : {
+                "fullname" : "http://xmlns.com/foaf/0.1/name"
+            }
+         }
+    ]
+}
