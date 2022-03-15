@@ -74,6 +74,10 @@
           "type": "string",
           "predicate": "schema:thumbnailUrl"
         },
+        "image": {
+          "type": "string",
+          "predicate": "schema:image"
+        },
         "dateCreated": {
           "type": "datetime",
           "predicate": "schema:dateCreated"

@@ -27,22 +27,28 @@ function extractBody(triples){
   }
 }
 
+function extractUuid(triples){
+  let result = triples.filter(triple => triple.predicate.value === 'http://mu.semte.ch/vocabularies/core/uuid');
+  if(result){
+    return result[0];
+  }
+}
+
 app.get('/', (req, res) => {
   res.send('<h1>Hello world</h1>');
 });
 
 app.post('/posts', (req, res) => {
   req.body.forEach(operation => {
-    let headlinetriple = extractHeadline(operation.inserts);
-    let bodytriple = extractBody(operation.inserts);
-    if(headlinetriple && bodytriple){
-      console.log(wss.clients);
+    console.log(operation.inserts)
+    let uuidTriple = extractUuid(operation.inserts);
+    // let headlinetriple = extractHeadline(operation.inserts);
+    // let bodytriple = extractBody(operation.inserts);
+    if(uuidTriple){
       wss.clients.forEach((client) => {
         if(client.readyState === WebSocket.OPEN){
-          console.log("yes");
           client.send(JSON.stringify({
-              headline: headlinetriple.object.value,
-              body: bodytriple.object.value
+              uuid: uuidTriple.object.value
             }));
         }
       })

@@ -64,7 +64,7 @@ services:
       DEFAULT_SPARQL_ENDPOINT: "http://localhost:8890/sparql"
       ENABLE_ENDPOINT_SELECTOR: true
   resource:
-    image: semtech/mu-cl-resources:1.20.0
+    image: semtech/mu-cl-resources:latest
     links:
       - database:database
     volumes:
@@ -97,8 +97,6 @@ services:
 
   frontend:
     image: danlynn/ember-cli:4.2.0
-    ports:
-      - "4200:4200"
     volumes:
       - ../ember-mu-socialplatform:/myapp
 
