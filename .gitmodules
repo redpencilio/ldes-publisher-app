@@ -1,0 +1,6 @@
+[submodule "ember-mu-socialplatform"]
+	path = ember-mu-socialplatform
+	url = https://github.com/jlpoelma/ember-mu-socialplatform
+[submodule "registration-service"]
+	path = registration-service
+	url = https://github.com/FangioD/registration-service.git
