@@ -1,39 +1,46 @@
 version: "3.4"
 
 services:
-    identifier:
+    identifier-publisher:
         image: semtech/mu-identifier:feature-websockets
         environment:
             SESSION_COOKIE_SECURE: "on"
             environment:
             DEFAULT_MU_AUTH_ALLOWED_GROUPS_HEADER: '[{"variables":[],"name":"public"}]'
         links:
-            - dispatcher:dispatcher
+            - dispatcher-publisher:dispatcher
         ports:
             - "80:80"
         networks:
             - ldes-network
 
-    dispatcher:
+    dispatcher-publisher:
         image: semtech/mu-dispatcher:feature-websockets
         links:
-            - resource:resource
+            - resource-publisher:resource
+            - file-publisher:file
+            - login-publisher:login
+            - registration-publisher:registration
+            - socialplatformwsmicroservice-publisher:socialplatformwsmicroservice
+            - frontend-publisher:frontend
         volumes:
             - ./config/dispatcher:/config
         networks:
             - ldes-network
 
-    database:
+    database-publisher:
         image: semtech/mu-authorization:0.6.0-beta.7
         environment:
-            MU_SPARQL_ENDPOINT: "http://triplestore:8890/sparql"
+            MU_SPARQL_ENDPOINT: "http://triplestore-publisher:8890/sparql"
             ERROR_ON_UNWRITTEN_DATA: true
+        links:
+            - deltanotifier-publisher:deltanotifier
         volumes:
             - ./config/authorization:/config
         networks:
             - ldes-network
 
-    triplestore:
+    triplestore-publisher:
         image: redpencil/virtuoso:1.0.0
         environment:
             SPARQL_UPDATE: "true"
@@ -46,35 +53,35 @@ services:
         networks:
             - ldes-network
 
-    login:
+    login-publisher:
         image: semtech/mu-login-service:2.9.1
         environment:
             USERS_GRAPH: "http://mu.semte.ch/graphs/users"
             SESSIONS_GRAPH: "http://mu.semte.ch/graphs/sessions"
         links:
-            - database:database
+            - database-publisher:database
         networks:
             - ldes-network
 
-    registration:
+    registration-publisher:
         build: ./registration-service
         environment:
             MU_APPLICATION_GRAPH: "http://mu.semte.ch/graphs/users"
         links:
-            - database:database
+            - database-publisher:database
         networks:
             - ldes-network
 
-    file:
+    file-publisher:
         image: semtech/mu-file-service:3.2.0
         links:
-            - database:database
+            - database-publisher:database
         volumes:
             - ./data/files:/share
         networks:
             - ldes-network
 
-    yasgui:
+    yasgui-publisher:
         image: erikap/yasgui
         ports:
             - 3000:80
@@ -84,39 +91,43 @@ services:
         networks:
             - ldes-network
 
-    resource:
+    resource-publisher:
         image: semtech/mu-cl-resources:1.21.0
         links:
-            - database:database
+            - database-publisher:database
         volumes:
             - ./config/resources:/config
         networks:
             - ldes-network
 
-    deltanotifier:
+    deltanotifier-publisher:
         image: semtech/mu-delta-notifier
         volumes:
             - ./config/delta:/config
+        links:
+            - socialplatformwsmicroservice-publisher:socialplatformwsmicroservice
+            - socialplatformmicroservice-publisher:socialplatformmicroservice
+
         networks:
             - ldes-network
 
-    socialplatformmicroservice:
+    socialplatformmicroservice-publisher:
         image: semtech/mu-javascript-template
         environment:
             NODE_ENV: "development"
         links:
-            - triplestore:database
+            - triplestore-publisher:database
         volumes:
             - ./socialplatform-microservice/:/app/
         networks:
             - ldes-network
 
-    socialplatformwsmicroservice:
+    socialplatformwsmicroservice-publisher:
         image: semtech/mu-javascript-template
         environment:
             NODE_ENV: "development"
         links:
-            - triplestore:database
+            - triplestore-publisher:database
         ports:
             - 3002:3000
         volumes:
@@ -124,17 +135,17 @@ services:
         networks:
             - ldes-network
 
-    frontend:
+    frontend-publisher:
         image: danlynn/ember-cli:4.2.0
         volumes:
             - ./ember-mu-socialplatform:/myapp
         networks:
             - ldes-network
 
-    imageservice:
+    imageservice-publisher:
         image: madnificent/mu-image-service:0.0.1
         links:
-            - database:database
+            - database-publisher:database
         volumes:
             - ./data/files:/share
         networks:
