@@ -1,46 +1,29 @@
 version: "3.4"
 
 services:
-    identifier-consumer:
+    identifier:
         image: semtech/mu-identifier:feature-websockets
         environment:
             SESSION_COOKIE_SECURE: "on"
             environment:
             DEFAULT_MU_AUTH_ALLOWED_GROUPS_HEADER: '[{"variables":[],"name":"public"}]'
-        links:
-            - dispatcher-consumer:dispatcher
         ports:
             - "82:80"
-        networks:
-            - ldes-network
 
-    dispatcher-consumer:
+    dispatcher:
         image: semtech/mu-dispatcher:feature-websockets
-        links:
-            - resource-consumer:resource
-            - file-consumer:file
-            - login-consumer:login
-            - registration-consumer:registration
-            - socialplatformwsmicroservice-consumer:socialplatformwsmicroservice
-            - frontend-consumer:frontend
         volumes:
             - ./config/dispatcher:/config
-        networks:
-            - ldes-network
 
-    database-consumer:
+    database:
         image: semtech/mu-authorization:0.6.0-beta.7
         environment:
-            MU_SPARQL_ENDPOINT: "http://triplestore-consumer:8890/sparql"
+            MU_SPARQL_ENDPOINT: "http://triplestore:8890/sparql"
             ERROR_ON_UNWRITTEN_DATA: true
-        links:
-            - deltanotifier-consumer:deltanotifier
         volumes:
             - ./config/authorization:/config
-        networks:
-            - ldes-network
 
-    triplestore-consumer:
+    triplestore:
         image: redpencil/virtuoso:1.0.0
         environment:
             SPARQL_UPDATE: "true"
@@ -50,105 +33,70 @@ services:
         volumes:
             - ./data/db:/data
             - ./config/virtuoso/virtuoso.ini:/data/virtuoso.ini
-        networks:
-            - ldes-network
 
-    login-consumer:
+    login:
         image: semtech/mu-login-service:2.9.1
         environment:
             USERS_GRAPH: "http://mu.semte.ch/graphs/users"
             SESSIONS_GRAPH: "http://mu.semte.ch/graphs/sessions"
-        links:
-            - database-consumer:database
-        networks:
-            - ldes-network
 
-    registration-consumer:
+    registration:
         build: ./registration-service
         environment:
             MU_APPLICATION_GRAPH: "http://mu.semte.ch/graphs/users"
-        links:
-            - database-consumer:database
-        networks:
-            - ldes-network
 
-    file-consumer:
+    file:
         image: semtech/mu-file-service:3.2.0
-        links:
-            - database-consumer:database
         volumes:
             - ./data/files:/share
-        networks:
-            - ldes-network
 
-    yasgui-consumer:
+    yasgui:
         image: erikap/yasgui
         ports:
             - 3001:80
         environment:
             DEFAULT_SPARQL_ENDPOINT: "http://localhost:8890/sparql"
             ENABLE_ENDPOINT_SELECTOR: true
-        networks:
-            - ldes-network
 
-    resource-consumer:
+    resource:
         image: semtech/mu-cl-resources:1.21.0
-        links:
-            - database-consumer:database
         volumes:
             - ./config/resources:/config
-        networks:
-            - ldes-network
 
-    deltanotifier-consumer:
+    deltanotifier:
         image: semtech/mu-delta-notifier
         volumes:
             - ./config/delta:/config
-        networks:
-            - ldes-network
-        links:
-            - socialplatformwsmicroservice-consumer:socialplatformwsmicroservice
-            - socialplatformmicroservice-consumer:socialplatformmicroservice
 
-    socialplatformmicroservice-consumer:
+    socialplatformmicroservice:
         image: semtech/mu-javascript-template
         environment:
             NODE_ENV: "development"
         links:
-            - triplestore-consumer:database
+            - triplestore:database
         volumes:
             - ./socialplatform-microservice/:/app/
-        networks:
-            - ldes-network
 
-    socialplatformwsmicroservice-consumer:
+    socialplatformwsmicroservice:
         image: semtech/mu-javascript-template
         environment:
             NODE_ENV: "development"
         links:
-            - triplestore-consumer:database
+            - triplestore:database
         ports:
             - 3005:3000
         volumes:
             - ./socialplatform-ws-microservice/:/app/
-        networks:
-            - ldes-network
 
-    frontend-consumer:
+    frontend:
         image: danlynn/ember-cli:4.2.0
         volumes:
             - ./ember-mu-socialplatform:/myapp
-        networks:
-            - ldes-network
 
-    imageservice-consumer:
+    imageservice:
         image: madnificent/mu-image-service:0.0.1
-        links:
-            - database-consumer:database
         volumes:
             - ./data/files:/share
-        networks:
-            - ldes-network
 
     ldes-consumer-service:
         image: semtech/mu-javascript-template:feature-typescript-support
@@ -157,11 +105,10 @@ services:
             MU_APPLICATION_GRAPH: "http://mu.semte.ch/ldes-posts"
             LOG_SPARQL_ALL: false
             DEBUG_AUTH_HEADERS: true
-        links:
-            - database-consumer:database
         volumes:
             - ./ldes-consumer-microservice/:/app/
         networks:
+            - default
             - ldes-network
 
 networks:
