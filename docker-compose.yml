@@ -114,6 +114,10 @@ services:
         image: semtech/mu-javascript-template:feature-typescript-support
         environment:
             NODE_ENV: "development"
+            LDES_ENDPOINT: "http://ldes-time-fragmenter:3000/social-media-posts"
+            LDES_STREAM: "http://example.org/post-stream"
+            LDES_RELATION_PATH: "https://schema.org/dateCreated"
+            LDES_FRAGMENTER: "time-fragmenter"
         volumes:
             - ./ldes-publisher-microservice/:/app/
         networks:
