@@ -26,61 +26,6 @@ function toString(triple) {
 	)} ${formatValue(triple.object)}.`;
 }
 
-function generateQuery(inserts, deletes) {
-	let insertString = "";
-	inserts.forEach((insert) => {
-		insertString += toString(insert) + "\n";
-	});
-	let deleteString = "";
-	deletes.forEach((deleteOp) => {
-		deleteString += toString(deleteOp) + "\n";
-	});
-
-	if (insertString) {
-		insertString = `INSERT {
-            GRAPH <${APPLICATION_GRAPH}> {
-                ${insertString}
-            }
-        }`;
-	}
-	if (deleteString) {
-		deleteString = `
-        DELETE {
-            GRAPH <${APPLICATION_GRAPH}> {
-                ${deleteString}
-            }
-        }`;
-	}
-
-	let queryStr = `
-        ${deleteString}\n
-        ${insertString}
-    `;
-	return queryStr;
-}
-
-app.post("/posts", function (req, res) {
-	console.log("post");
-	let inserts = [];
-	let deletes = [];
-	req.body.forEach((operation) => {
-		operation.inserts.forEach((insert) => {
-			inserts.push(insert);
-		});
-		operation.deletes.forEach((deleteOp) => {
-			deletes.push(deleteOp);
-		});
-	});
-
-	query(generateQuery(inserts, deletes))
-		.then(function (response) {
-			res.send(JSON.stringify(response));
-		})
-		.catch(function (err) {
-			res.send("Oops something went wrong: " + JSON.stringify(err));
-		});
-});
-
 async function sendLDESRequest(uri, body) {
 	const queryParams = new URLSearchParams({
 		resource: uri,
@@ -101,7 +46,8 @@ async function sendLDESRequest(uri, body) {
 	);
 }
 
-app.post("/posts-ldes", async function (req, res) {
+app.post("/publish", async function (req, res) {
+	console.log("publish");
 	for (const operation of req.body) {
 		let resource = operation.inserts;
 		if (resource) {

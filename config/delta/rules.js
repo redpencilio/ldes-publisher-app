@@ -32,7 +32,7 @@ export default [
 			},
 		},
 		callback: {
-			url: "http://socialplatformmicroservice/posts-ldes/",
+			url: "http://ldes-publisher-microservice/publish/",
 			method: "POST",
 		},
 		options: {
