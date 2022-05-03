@@ -107,6 +107,8 @@ services:
             DEBUG_AUTH_HEADERS: true
             LDES_ENDPOINT_VIEW: "http://ldes-time-fragmenter:3000/social-media-posts/1"
             LDES_STREAM: "http://example.org/post-stream"
+        volumes:
+            - ./ldes-consumer-service/:/app/
         networks:
             - default
             - ldes-network
