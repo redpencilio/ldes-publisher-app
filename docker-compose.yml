@@ -105,6 +105,8 @@ services:
             MU_APPLICATION_GRAPH: "http://mu.semte.ch/ldes-posts"
             LOG_SPARQL_ALL: false
             DEBUG_AUTH_HEADERS: true
+            LDES_ENDPOINT_VIEW: "http://ldes-time-fragmenter:3000/social-media-posts/1"
+            LDES_STREAM: "http://example.org/post-stream"
         volumes:
             - ./ldes-consumer-microservice/:/app/
         networks:
