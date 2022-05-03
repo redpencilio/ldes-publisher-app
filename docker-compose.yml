@@ -111,13 +111,11 @@ services:
             - ./socialplatform-ws-microservice/:/app/
 
     ldes-publisher-microservice:
-        image: semtech/mu-javascript-template:feature-typescript-support
+        build: ./ldes-publisher-microservice/
         environment:
             NODE_ENV: "development"
             LDES_ENDPOINT: "http://ldes-time-fragmenter:3000/social-media-posts"
             LDES_STREAM: "http://example.org/post-stream"
-            LDES_RELATION_PATH: "https://schema.org/dateCreated"
-            LDES_FRAGMENTER: "time-fragmenter"
         volumes:
             - ./ldes-publisher-microservice/:/app/
         networks:
