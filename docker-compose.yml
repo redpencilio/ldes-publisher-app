@@ -99,7 +99,7 @@ services:
             - ./data/files:/share
 
     ldes-consumer-service:
-        build: ./ldes-consumer-microservice/
+        build: ./ldes-consumer-service/
         environment:
             NODE_ENV: "development"
             MU_APPLICATION_GRAPH: "http://mu.semte.ch/ldes-posts"
@@ -107,8 +107,6 @@ services:
             DEBUG_AUTH_HEADERS: true
             LDES_ENDPOINT_VIEW: "http://ldes-time-fragmenter:3000/social-media-posts/1"
             LDES_STREAM: "http://example.org/post-stream"
-        volumes:
-            - ./ldes-consumer-microservice/:/app/
         networks:
             - default
             - ldes-network

@@ -4,3 +4,6 @@
 [submodule "registration-service"]
 	path = registration-service
 	url = https://github.com/FangioD/registration-service.git
+[submodule "ldes-consumer-service"]
+	path = ldes-consumer-service
+	url = https://github.com/redpencilio/ldes-consumer-service
