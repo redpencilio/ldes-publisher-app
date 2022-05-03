@@ -99,7 +99,7 @@ services:
             - ./data/files:/share
 
     ldes-consumer-service:
-        image: semtech/mu-javascript-template:feature-typescript-support
+        build: ./ldes-consumer-microservice/
         environment:
             NODE_ENV: "development"
             MU_APPLICATION_GRAPH: "http://mu.semte.ch/ldes-posts"
