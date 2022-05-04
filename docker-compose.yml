@@ -122,6 +122,7 @@ services:
             DEBUG_AUTH_HEADERS: true
             LDES_ENDPOINT_VIEW: "http://ldes-time-fragmenter:3000/public-services/1"
             LDES_STREAM: "http://example.org/ps-stream"
+            LDES_POLLING_INTERVAL: 1500
         volumes:
             - ./ldes-consumer-service/:/app/
         networks:
